@@ -7,4 +7,9 @@
 
 ## Project 1: Number guessing game
 
-i want to push it today but it's incomplete so i will just do it... not like anyone gonna read all the readme logs of this repo. i will complete it tomorrow.
+very simple concept. have 7 tries to guess the answer(a number between 1 and 100). i used basic loops, if/else, and function. also learned how julia handles global vs local variables.
+
+>hint: to win everytime, use binary search
+
+## Project 2: Conway's Game of Life
+well it's still incomplete. i wrote the basic program but no visualization so useless code for now. will fix and add things in the code tomorrow and update this description. adding the incomplete project file anyway.
