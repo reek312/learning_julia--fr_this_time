@@ -18,4 +18,4 @@ it works but the code is kinda bad. every cell scans the whole agent list to fin
 
 next: rewrite with a matrix instead of structs, and learn @views on the way. will update it if my ADHD lets me come back to it.
 
->you can search "conway's game of life" and play it there too
+>you can search "conway's game of life" on google and play it there too
