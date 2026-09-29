@@ -1,4 +1,7 @@
-using Random
+
+const ROW = 20
+const COL = 30
+const init_prob = 0.2
 
 mutable struct Agent
     alive::Bool
@@ -11,60 +14,57 @@ function alive_neighbor(agent::Agent, agent_list)
     to_check = [(x+1, y), (x-1, y), (x, y+1), (x, y-1),
                 (x+1, y+1), (x-1, y+1), (x+1, y-1), (x-1, y-1)]
     for i in agent_list
-        if i.location in to_check && i.alive
+        if i.alive && i.location in to_check
             total_alive+=1
         end
     end
     total_alive
 end
 
-function step(agent_list)
+function step!(agent_list)
+    is_alive = Bool[]
     for agent in agent_list
         neighbors = alive_neighbor(agent, agent_list)
-        if neighbors>3 || neighbors<2
-            agent.alive = false
-        else
-            agent.alive = true
-        end
+        will_live = (neighbors == 3) || (agent.alive && neighbors == 2)
+        push!(is_alive, will_live)
+    end
+    for i = 1:ROW*COL
+        agent_list[i].alive = is_alive[i]
     end
 end
 
-function display_grid(agent_list, grid_size=20)
-    # Initialize a 2D array filled with dots (dead)
-    grid = fill('.', grid_size, grid_size)
+function display_grid(agent_list)
+    grid = fill('.', ROW, COL)
     
     for agent in agent_list
         if agent.alive
             x, y = agent.location
-            grid[x, y] = '#'  # Represent alive cells
+            grid[x, y] = '#'
         end
     end
 
-    # Print the frame
-    print("\033[H\033[2J") # Clear terminal screen
-    for row in 1:grid_size
+    print("\033[H\033[J")
+
+    for row in 1:ROW
         println(join(grid[row, :], " "))
     end
-    println()
 end
 
 
 function game()
-    agent_list = []
-    for i = 1:20, j = 1:20
-        likely_alive = rand()<0.3
+    agent_list = Agent[]
+    generations = 100
+    for i = 1:ROW, j = 1:COL
+        likely_alive = rand()<init_prob
         agent = Agent(likely_alive, (i,j))
         push!(agent_list, agent)
     end
-    for i = 1:50
-        step(agent_list)
-        display_grid(agent_list, 20)
-        sleep(0.1)
+    for i = 1:generations
+        step!(agent_list)
+        display_grid(agent_list)
+        sleep(0.3)
     end
 end
 
 
 game()
-
-
-#  learn @views and things like that
